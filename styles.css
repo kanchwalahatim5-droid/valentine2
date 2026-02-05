@@ -1,4 +1,3 @@
-/* Cute Valentine proposal styles */
 :root{
   --bg: linear-gradient(180deg,#fff0f6 0%, #fff6f9 40%, #fff 100%);
   --accent: #FF6B9A;
@@ -7,7 +6,7 @@
 }
 
 *{box-sizing:border-box}
-html,body,#root{height:100%}
+html,body{height:100%}
 body{
   margin:0;
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -15,7 +14,7 @@ body{
   color:#222;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  user-select:none; /* prevent selecting which can sometimes cause visual movement */
+  user-select:none;
 }
 
 .scene{
@@ -29,20 +28,22 @@ body{
 }
 
 /* Stickers */
-.stickers{ position:absolute; inset:0; pointer-events:none; }
+.stickers{ position:absolute; inset:0; pointer-events:none; z-index:0; }
 .sticker{
   position:absolute;
   transform-origin:center;
-  opacity:.95;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.08));
+  opacity:.98;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.06));
+  width:96px;
+  height:96px;
 }
-.s1{ top:6%; left:8%; transform:rotate(-6deg) scale(1); }
-.s2{ bottom:12%; right:6%; transform:rotate(10deg) scale(.95); }
+.s1{ top:6%; left:6%; transform:rotate(-6deg) scale(1); }
+.s2{ bottom:8%; right:8%; transform:rotate(10deg) scale(.95); }
 .s3{ top:18%; right:14%; transform:rotate(-12deg) scale(.9); }
 
 /* Card */
 .card{
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.98);
   border-radius:20px;
   padding:36px;
   width:min(720px, 94vw);
@@ -64,12 +65,9 @@ body{
 /* Highlighted name */
 .name{
   color: var(--accent-2);
-  background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.0));
   padding: 6px 10px;
   border-radius: 10px;
-  box-decoration-break: clone;
   font-weight:700;
-  -webkit-box-decoration-break: clone;
 }
 
 /* Subtext */
@@ -78,8 +76,19 @@ body{
   margin:0 0 22px;
 }
 
-/* CTA */
+/* CTA area: contains both buttons and constrains No button movement */
 .cta-wrap{ display:flex; justify-content:center; gap:12px; align-items:center; margin-top:6px; }
+.cta-area{
+  position:relative;
+  width:min(420px,78vw);
+  height:92px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+}
+
+/* Primary Yes button */
 .proposal{
   appearance:none;
   -webkit-appearance:none;
@@ -93,14 +102,35 @@ body{
   box-shadow: 0 8px 24px rgba(255,107,154,0.18);
   transition: transform .15s ease, box-shadow .15s ease;
   outline:none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation; /* avoid unintended default gestures */
+  z-index:3;
+  position:relative;
   user-select:none;
 }
 
-/* IMPORTANT: keep button from moving. Only scale on press for feedback. */
-.proposal:active{ transform: scale(.98); }
-.proposal:focus{ box-shadow: 0 0 0 6px rgba(255,107,154,0.14); }
+/* Evasive No button */
+.no-btn{
+  position:absolute;
+  left: calc(50% + 140px);
+  transform: translate(-50%, 0);
+  top: 50%;
+  transform-origin:center;
+  transform: translate(-50%,-50%);
+  appearance:none;
+  border: 2px solid rgba(0,0,0,0.06);
+  background: #fff;
+  color:#333;
+  padding:12px 18px;
+  border-radius:999px;
+  font-size:16px;
+  cursor:pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform .22s cubic-bezier(.2,.9,.3,1), left .22s, top .22s;
+  z-index:4;
+  user-select:none;
+}
+
+/* small active feedback (but we still dodge) */
+.no-btn:active{ transform: scale(.98) translate(-50%,-50%); }
 
 /* modal */
 .modal{
@@ -160,4 +190,5 @@ body{
   .card{ padding:20px; border-radius:16px;}
   .heading{ font-size:28px; }
   .proposal{ padding:14px 22px; font-size:16px; }
+  .cta-area{ height:84px; }
 }
