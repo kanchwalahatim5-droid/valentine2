@@ -4,45 +4,39 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Will you be my Valentine?</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="scene">
-    <!-- Image stickers -->
-    <div class="stickers" aria-hidden="true">
-      <img src="assets/sticker1.svg" class="sticker s1" alt="">
-      <img src="assets/sticker2.svg" class="sticker s2" alt="">
-      <img src="assets/sticker3.svg" class="sticker s3" alt="">
-    </div>
+  <main class="page">
+    <section class="card" id="card" aria-labelledby="title" role="region">
+      <!-- Floating stickers (kept in assets/) -->
+      <img class="sticker sticker-1" src="assets/sticker1.svg" alt="heart sticker" draggable="false">
+      <img class="sticker sticker-2" src="assets/sticker2.svg" alt="kawaii sticker" draggable="false">
+      <img class="sticker sticker-3" src="assets/sticker3.svg" alt="cluster sticker" draggable="false">
 
-    <section class="card" role="region" aria-labelledby="proposal-heading">
-      <h1 id="proposal-heading" class="heading">Will you be my Valentine, <span class="name">kulsum</span>?</h1>
+      <h1 id="title">Will you be my Valentine?</h1>
+      <p class="lead">I made something cute — pick an answer. Spoiler: one of the buttons might be hard to click 😉</p>
 
-      <p class="sub">I made this just for you — full of cute stickers and love 💕</p>
-
-      <div class="cta-wrap">
-        <div class="cta-area" id="cta-area" aria-hidden="false">
-          <button id="yes-btn" class="proposal" aria-label="Yes button">Yes? 💖</button>
-          <button id="no-btn" class="no-btn" aria-label="No button">No 😅</button>
+      <div class="cta-row" id="cta-row">
+        <button id="yes-btn" class="btn btn-yes" aria-label="Yes">Yes</button>
+        <div class="no-wrap" id="no-wrap" aria-hidden="false">
+          <!-- No button is absolutely positioned inside this wrapper -->
+          <button id="no-btn" class="btn btn-no" aria-label="No">No</button>
         </div>
       </div>
     </section>
-
-    <!-- Modal shown when Yes clicked -->
-    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="modal-card" role="document">
-        <h2>Yay! 🌸</h2>
-        <p>You clicked the button — love you, <strong>kulsum</strong>!</p>
-        <div class="modal-actions">
-          <button id="close-modal" class="btn-secondary">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <footer class="credit">Made with ♥ for kulsum</footer>
   </main>
 
-  <script src="script.js"></script>
+  <!-- Modal -->
+  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-panel" role="document">
+      <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+      <h2>Yay! 💖</h2>
+      <p>You're the best. Thanks for clicking Yes — I knew you'd do it.</p>
+      <button id="modal-ok" class="btn btn-yes">Awesome</button>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
