@@ -1,9 +1,10 @@
 // Evasive "No" button logic + modal + confetti/particles + background hearts + shower hearts
+// Also handles the hero image pop-in above the proposal.
 // Config
 const DODGE_DISTANCE = 120;        // px - how close the pointer can get before No dodges
 const MOVE_DISTANCE = 120;         // px - how far to attempt to move each dodge
 const MAX_MOVES_BEFORE_HOLD = 999; // set lower to allow clicks after N attempts
-const BG_HEART_COUNT = 60;         // increased background hearts (more visible)
+const BG_HEART_COUNT = 60;         // background hearts
 const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
 
 (function () {
@@ -18,9 +19,17 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
   const nameEl = document.querySelector('.name');
   const bgHearts = document.querySelector('.bg-hearts');
   const yayImg = document.getElementById('yay-img');
+  const heroImg = document.getElementById('hero-img');
 
   // Entrance animation
-  requestAnimationFrame(() => card.classList.add('enter'));
+  requestAnimationFrame(() => {
+    card.classList.add('enter');
+
+    // pop in hero image slightly after card entrance
+    if (heroImg) {
+      setTimeout(() => heroImg.classList.add('show'), 260);
+    }
+  });
   yesBtn.classList.add('pulse');
 
   // Add shimmer on name
@@ -163,12 +172,10 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
     modal.setAttribute('aria-hidden', 'false');
     modalClose.focus();
 
-    // show and animate your supplied image above "Yay!"
+    // show and animate the modal image above "Yay!"
     if (yayImg) {
-      // ensure visible and animate in
       yayImg.classList.add('show');
-      // hide after a while (optional)
-      setTimeout(() => yayImg.classList.remove('show'), 4000);
+      setTimeout(() => yayImg.classList.remove('show'), 4500);
     }
 
     // celebrate: confetti + hearts + shower from top
