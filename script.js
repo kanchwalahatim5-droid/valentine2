@@ -13,7 +13,7 @@ const PROPOSAL_PHRASES = [
   "Will you be my Valentine,",
   "i promise you ll like it,",
   "come on. click yes!,",
-  "yo can't escape destiny!,",
+  "you can't escape destiny!,",
   "just click yes already,",
   "Will you say 'yes' to me,",
   "Will you be my favorite person,"
