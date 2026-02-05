@@ -3,6 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Will you be my Valentine?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card" role="main" aria-labelledby="title">
+      <h1 id="title" class="title">Will you be my Valentine?</h1>
+      <p class="subtitle">Choose honestly... 💞</p>
+
+      <!-- persuasive tagline updated each time user tries "No" -->
+      <div id="persuade" class="persuade" aria-live="polite" aria-atomic="true"></div>
+
+      <div id="buttons" class="buttons" aria-hidden="false">
+        <button id="yesBtn" class="btn btn-yes" aria-label="Yes, I will be your Valentine">Yes 💘</button>
+        <button id="noBtn" class="btn btn-no" aria-label="No" tabindex="0">No 😅</button>
+      </div>
+
+      <p class="hint">You can decorate this card later — try not to click No 😉</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html><!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>She said YES! 🎉</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
