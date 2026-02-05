@@ -3,8 +3,8 @@
 const DODGE_DISTANCE = 120;        // px - how close the pointer can get before No dodges
 const MOVE_DISTANCE = 120;         // px - how far to attempt to move each dodge
 const MAX_MOVES_BEFORE_HOLD = 999; // set lower to allow clicks after N attempts
-const BG_HEART_COUNT = 40;         // increased background hearts (more visible)
-const SHOWER_HEART_COUNT = 36;     // hearts falling from above when Yes clicked
+const BG_HEART_COUNT = 60;         // increased background hearts (more visible)
+const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
 
 (function () {
   const yesBtn = document.getElementById('yes-btn');
