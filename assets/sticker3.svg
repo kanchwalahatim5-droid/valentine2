@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Smiling heart cluster -->
-<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
   <rect width="64" height="64" rx="12" fill="#FFF7F9"/>
-  <g transform="translate(6,6)" fill="none">
+  <g transform="translate(6,6)" fill="none" stroke="none">
     <path d="M22 12c-3.3-6-12.7-6-16 0" fill="#FF6B9A"/>
     <path d="M38 18c-4-6-12-6-16 0" fill="#FFB4CF"/>
+    <circle cx="24" cy="34" r="1.6" fill="#FF9BC2"/>
   </g>
-  <text x="32" y="52" font-size="8" text-anchor="middle" fill="#FF6B9A">♥</text>
 </svg>
