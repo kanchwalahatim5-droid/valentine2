@@ -1,107 +1,163 @@
+/* Cute Valentine proposal styles */
 :root{
-  --bg1: #fff4f9;
-  --bg2: #fff0f6;
-  --card:#fff7fb;
-  --accent: #ff4d94;
-  --accent-dark: #c32b6a;
-  --muted: #7a4866;
-  --text: #3a1033;
+  --bg: linear-gradient(180deg,#fff0f6 0%, #fff6f9 40%, #fff 100%);
+  --accent: #FF6B9A;
+  --accent-2: #FF9BC2;
+  --muted: #6B6B6B;
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body,#root{height:100%}
 body{
   margin:0;
-  font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color:#222;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  user-select:none; /* prevent selecting which can sometimes cause visual movement */
+}
+
+.scene{
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:2rem;
-  color:var(--text);
-}
-
-/* card */
-.page{ width:100%; max-width:760px; }
-.card{
+  padding:32px;
   position:relative;
-  background: linear-gradient(180deg, rgba(255,255,255,0.96), var(--card));
-  border-radius:18px;
-  padding:2rem;
-  text-align:center;
-  box-shadow: 0 18px 46px rgba(195,43,106,0.12);
-  border: 1px solid rgba(255,255,255,0.6);
+  overflow:hidden;
 }
 
-/* title */
-.title{ margin:0; font-weight:800; font-size:2rem; color:var(--accent-dark); }
-.subtitle{ margin:6px 0 16px; color:var(--muted); }
-
-/* persuasion */
-.persuade{
-  margin:0.6rem auto 1rem;
-  max-width:86%;
-  color:#2b1026;
-  background: linear-gradient(180deg,#fff8fb,#fff0f6);
-  border-radius:12px;
-  padding:10px 14px;
-  font-weight:600;
-  box-shadow: 0 8px 24px rgba(195,43,106,0.06);
-  border: 1px solid rgba(195,43,106,0.06);
-  opacity:0;
-  transform: translateY(-6px) scale(.98);
-  transition: opacity .28s ease, transform .28s cubic-bezier(.2,.9,.2,1);
-  pointer-events:none;
-  line-height:1.15;
-}
-.persuade.show{ opacity:1; transform: translateY(0) scale(1); }
-
-/* buttons area */
-.buttons{ position:relative; height:220px; margin-top:6px; user-select:none; }
-
-/* general button style */
-.btn{
+/* Stickers */
+.stickers{ position:absolute; inset:0; pointer-events:none; }
+.sticker{
   position:absolute;
-  border:0;
-  padding:0.72rem 1.2rem;
+  transform-origin:center;
+  opacity:.95;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.08));
+}
+.s1{ top:6%; left:8%; transform:rotate(-6deg) scale(1); }
+.s2{ bottom:12%; right:6%; transform:rotate(10deg) scale(.95); }
+.s3{ top:18%; right:14%; transform:rotate(-12deg) scale(.9); }
+
+/* Card */
+.card{
+  background: rgba(255,255,255,0.9);
+  border-radius:20px;
+  padding:36px;
+  width:min(720px, 94vw);
+  max-width:720px;
+  text-align:center;
+  box-shadow: 0 12px 40px rgba(255,107,154,0.08);
+  position:relative;
+  z-index:2;
+}
+
+.heading{
+  font-family: "Pacifico", cursive;
+  font-size: clamp(28px, 6vw, 48px);
+  margin:0 0 8px;
+  color:#FF4D88;
+  letter-spacing:0.4px;
+}
+
+/* Highlighted name */
+.name{
+  color: var(--accent-2);
+  background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.0));
+  padding: 6px 10px;
+  border-radius: 10px;
+  box-decoration-break: clone;
+  font-weight:700;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Subtext */
+.sub{
+  color:var(--muted);
+  margin:0 0 22px;
+}
+
+/* CTA */
+.cta-wrap{ display:flex; justify-content:center; gap:12px; align-items:center; margin-top:6px; }
+.proposal{
+  appearance:none;
+  -webkit-appearance:none;
+  border: none;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+  color:white;
+  padding:16px 28px;
   border-radius:999px;
-  font-size:1rem;
+  font-size:18px;
   cursor:pointer;
+  box-shadow: 0 8px 24px rgba(255,107,154,0.18);
+  transition: transform .15s ease, box-shadow .15s ease;
   outline:none;
-  box-shadow: 0 10px 26px rgba(195,43,106,0.08);
-  transition: transform .22s ease, box-shadow .18s ease, left .28s, top .28s;
-  will-change:left,top,transform;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; /* avoid unintended default gestures */
+  user-select:none;
 }
 
-/* Yes - centered */
-.btn-yes{
-  left:50%;
-  top:50%;
-  transform: translate(-50%,-50%);
-  background: linear-gradient(180deg,var(--accent),var(--accent-dark));
-  color:#fff;
-  font-weight:800;
-  box-shadow: 0 16px 40px rgba(255,77,148,0.16);
-  animation: pulse 2.2s infinite;
-}
-@keyframes pulse{ 0%{ transform: translate(-50%,-50%) scale(1) } 50%{ transform: translate(-50%,-50%) scale(1.06) } 100%{ transform: translate(-50%,-50%) scale(1) } }
+/* IMPORTANT: keep button from moving. Only scale on press for feedback. */
+.proposal:active{ transform: scale(.98); }
+.proposal:focus{ box-shadow: 0 0 0 6px rgba(255,107,154,0.14); }
 
-/* No - initial position */
-.btn-no{
-  left:18%;
-  top:70%;
-  background:#fff;
-  color:var(--accent-dark);
-  border: 2px solid rgba(195,43,106,0.12);
+/* modal */
+.modal{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.28);
+  visibility:hidden;
+  opacity:0;
+  transition: opacity .18s ease, visibility .18s ease;
+  z-index:10;
+  pointer-events:none;
+}
+.modal[aria-hidden="false"]{
+  visibility:visible;
+  opacity:1;
+  pointer-events:auto;
 }
 
-/* hint */
-.hint{ margin-top:1rem; color:var(--muted); font-size:0.95rem; }
+.modal-card{
+  background:white;
+  padding:22px;
+  border-radius:14px;
+  width:min(420px,90vw);
+  text-align:center;
+  box-shadow:0 18px 40px rgba(0,0,0,0.12);
+}
+
+.modal h2{ margin:0 0 8px; color:var(--accent); font-family:Pacifico, cursive; font-size:24px; }
+.modal p{ margin:0 0 16px; color:var(--muted); }
+
+/* buttons in modal */
+.btn-secondary{
+  background:transparent;
+  border:1px solid #f0d6df;
+  padding:8px 14px;
+  border-radius:10px;
+  color:var(--accent);
+  cursor:pointer;
+}
+
+/* footer */
+.credit{
+  position:fixed;
+  bottom:12px;
+  left:12px;
+  font-size:12px;
+  color:rgba(0,0,0,0.35);
+  z-index:1;
+}
 
 /* responsive tweaks */
 @media (max-width:520px){
-  .card{ padding:1.2rem; }
-  .title{ font-size:1.45rem; }
-  .buttons{ height:180px; }
-  .persuade{ max-width:92%; font-size:0.95rem; }
+  .stickers .sticker{ display:none; } /* simplify on small screens */
+  .card{ padding:20px; border-radius:16px;}
+  .heading{ font-size:28px; }
+  .proposal{ padding:14px 22px; font-size:16px; }
 }
