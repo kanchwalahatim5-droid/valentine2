@@ -3,28 +3,102 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Will you be my Valentine?</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <title>She said YES! 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* celebration-specific overrides */
+    body{ background: linear-gradient(180deg,#fff9fb,#ffeef8); }
+    .celebration{ display:flex; align-items:center; justify-content:center; min-height:100vh; padding:2rem; }
+    .box{ background: #fff; border-radius:16px; padding:2rem; text-align:center; box-shadow:0 20px 60px rgba(195,43,106,0.15); border:1px solid rgba(255,240,250,0.6); max-width:720px; margin:auto; position:relative; overflow:visible;}
+    .box h1{ margin:0; font-size:2rem; color:var(--accent-dark); }
+    .box p{ color:var(--muted); margin:8px 0 14px; }
+    /* sprinkles container */
+    .sprinkles{ position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:2; }
+    .sprinkle{ position:absolute; width:12px; height:12px; border-radius:2px; opacity:0; transform-origin:center; }
+    /* sticker */
+    .sticker-celebrate{ width:160px; height:160px; margin:18px auto 6px; display:block; animation: floatUp 2200ms ease-in-out infinite; }
+    @keyframes floatUp{ 0%{ transform: translateY(0) } 50%{ transform: translateY(-8px) } 100%{ transform: translateY(0) } }
+    .actions{ margin-top:12px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .btn-light{ background:#fff; color:var(--accent-dark); border:1px solid rgba(195,43,106,0.08); padding:10px 14px; border-radius:10px; cursor:pointer;}
+    .btn-primary{ background:var(--accent); color:#fff; border:0; padding:10px 14px; border-radius:10px; cursor:pointer;}
+  </style>
 </head>
 <body>
-  <main class="page">
-    <div class="card" role="main" aria-labelledby="title">
-      <h1 id="title" class="title">Will you be my Valentine?</h1>
-      <p class="subtitle">Choose honestly... 💞</p>
+  <div class="celebration">
+    <div class="box" role="main" aria-labelledby="celebrateTitle">
+      <div class="sprinkles" id="sprinkles" aria-hidden="true"></div>
 
-      <!-- persuasive tagline updated each time user tries "No" -->
-      <div id="persuade" class="persuade" aria-live="polite" aria-atomic="true"></div>
+      <h1 id="celebrateTitle">She said YES! 💖</h1>
+      <p>We're so happy — thank you for making this moment magical ✨</p>
 
-      <div id="buttons" class="buttons" aria-hidden="false">
-        <button id="yesBtn" class="btn btn-yes" aria-label="Yes, I will be your Valentine">Yes 💘</button>
-        <button id="noBtn" class="btn btn-no" aria-label="No" tabindex="0">No 😅</button>
+      <!-- cute sticker (inline SVG) -->
+      <svg class="sticker-celebrate" viewBox="0 0 240 240" role="img" aria-label="celebration heart sticker">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ff9acb"/><stop offset="1" stop-color="#ff4d94"/></linearGradient>
+        </defs>
+        <g transform="translate(20,12)">
+          <path d="M100 30c-15-26-64-28-80 7-16 35 32 76 80 114 48-38 96-79 80-114-16-35-65-33-80-7z" fill="url(#g)"/>
+          <circle cx="60" cy="80" r="6" fill="#fff"/>
+          <circle cx="40" cy="80" r="6" fill="#fff"/>
+          <path d="M44 102 Q60 118 76 102" stroke="#2e1028" stroke-width="3" fill="none" stroke-linecap="round" />
+        </g>
+      </svg>
+
+      <div class="actions">
+        <button class="btn-primary" id="shareBtnSuccess">Share the joy 🎉</button>
+        <button class="btn-light" id="backBtn">Back to card ✏️</button>
       </div>
-
-      <p class="hint">You can decorate this card later — try not to click No 😉</p>
     </div>
-  </main>
+  </div>
 
-  <script src="script.js"></script>
+  <script>
+    // simple sprinkle generator
+    (function(){
+      const sprinklesEl = document.getElementById('sprinkles');
+      const colors = ['#ff4d94','#ffd1e3','#ff9acb','#ffb3d9','#ffd36b','#ff6aa6'];
+      const n = 38;
+      for (let i=0;i<n;i++){
+        const s = document.createElement('div');
+        s.className = 'sprinkle';
+        s.style.background = colors[i % colors.length];
+        // random starting position (bottom area)
+        const left = Math.random()*100;
+        const size = 6 + Math.random()*12;
+        s.style.width = s.style.height = `${size}px`;
+        s.style.left = `${left}%`;
+        s.style.top = `${-10 - Math.random()*20}%`;
+        sprinklesEl.appendChild(s);
+        // animate falling with random duration & delay
+        const dur = 1200 + Math.random()*1400;
+        const delay = Math.random()*400;
+        const rot = Math.random()*360;
+        s.animate([
+          { transform: `translateY(0) rotate(0deg)`, opacity:1, offset:0 },
+          { transform: `translateY(380px) rotate(${rot}deg)`, opacity:0.02, offset:1 }
+        ], { duration: dur, easing: 'cubic-bezier(.2,.9,.2,1)', delay, iterations: 1, fill:'forwards' });
+        setTimeout(()=> s.remove(), dur + delay + 400);
+      }
+
+      // share button copies a celebratory message
+      const shareBtn = document.getElementById('shareBtnSuccess');
+      shareBtn.addEventListener('click', async () => {
+        const msg = "She said YES! 💖 We just said yes to being Valentines!";
+        try {
+          await navigator.clipboard.writeText(msg);
+          shareBtn.textContent = "Copied! 🎉";
+          setTimeout(()=> shareBtn.textContent = "Share the joy 🎉", 1400);
+        } catch(e){
+          shareBtn.textContent = "Copy failed";
+        }
+      });
+
+      // back button returns to index (so user can decorate / try again)
+      document.getElementById('backBtn').addEventListener('click', ()=> {
+        window.location.href = 'index.html';
+      });
+
+    })();
+  </script>
 </body>
 </html>
