@@ -1,10 +1,9 @@
 :root{
-  --bg: linear-gradient(180deg,#fff0f6 0%, #fff6f9 40%, #fff 100%);
+  --bg: linear-gradient(180deg,#fff7fb 0%, #fff9fc 40%, #fff 100%);
   --accent: #FF6B9A;
   --accent-2: #FF9BC2;
   --muted: #6B6B6B;
-  --card-bg: rgba(255,255,255,0.88);
-  --glass: rgba(255,255,255,0.6);
+  --card-bg: rgba(255,255,255,0.9);
   --shadow: 0 12px 40px rgba(18,18,18,0.08);
   --radius: 20px;
   --ease: cubic-bezier(.2,.9,.3,1);
@@ -26,6 +25,36 @@ body{
   justify-content:center;
   padding:36px;
   overflow-x:hidden;
+}
+
+/* Background hearts container */
+.bg-hearts{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  pointer-events:none;
+  overflow:hidden;
+  background: radial-gradient(ellipse at center, rgba(255,200,220,0.02) 0%, transparent 30%);
+}
+
+/* Reusable heart svg inside each .bg-heart */
+.bg-heart{
+  position:absolute;
+  width:16px;
+  height:16px;
+  pointer-events:none;
+  opacity:0;
+  transform-origin:center;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 6px 12px rgba(255,80,120,0.06));
+}
+
+/* rise animation for hearts floating up slowly */
+@keyframes heartRise {
+  0% { transform: translateY(0) scale(0.8) rotate(-10deg); opacity:0; }
+  8% { opacity:1; }
+  60% { opacity:0.9; }
+  100% { transform: translateY(-120vh) scale(1.15) rotate(30deg); opacity:0; }
 }
 
 /* Page & card */
@@ -57,7 +86,7 @@ body{
   position:absolute;
   inset:-28px;
   border-radius:calc(var(--radius) + 28px);
-  background: radial-gradient(ellipse at center, rgba(255,155,180,0.08) 0%, transparent 40%);
+  background: radial-gradient(ellipse at center, rgba(255,155,180,0.06) 0%, transparent 40%);
   z-index:-1;
   opacity:0;
   transition: opacity 800ms var(--ease);
@@ -65,30 +94,39 @@ body{
 .card.enter::before{ opacity:1 }
 
 /* Heading + text */
+/* Proposal line in Playfair Display for elegant serif */
 h1{
   margin:0 0 6px;
   font-size:34px;
   letter-spacing:-0.6px;
   font-weight:600;
   color:#222;
+  line-height:1.05;
 }
-.lead{margin:0 0 22px;color:var(--muted);font-size:15px}
+.proposal{
+  display:inline-block;
+  font-family: "Playfair Display", serif;
+  font-weight:600;
+  color:#6B1550; /* deep rosy/purple — distinct from name */
+  margin-right:8px;
+  font-size:34px;
+}
 
-/* Name highlight (Kulsum) */
+/* Name highlight (Kulsum): different color and style */
 .name{
   display:inline-block;
   font-family: "Great Vibes", cursive;
-  font-size:42px;
+  font-size:48px;
   margin-left:6px;
   color:transparent;
-  background: linear-gradient(90deg, #FF6B9A, #FF9BC2 60%);
+  background: linear-gradient(90deg, #FF6B9A, #FFB36F 70%); /* warm pink -> gold */
   -webkit-background-clip: text;
   background-clip: text;
   position:relative;
-  padding:2px 10px;
-  border-radius:10px;
+  padding:2px 12px;
+  border-radius:12px;
   transition: transform 360ms var(--ease), box-shadow 300ms var(--ease);
-  box-shadow: 0 6px 18px rgba(255,107,154,0.06);
+  box-shadow: 0 10px 32px rgba(255,107,154,0.06);
 }
 
 /* animated shimmer behind name */
@@ -96,15 +134,17 @@ h1{
   content:"";
   position:absolute;
   left:0; right:0; top:0; bottom:0;
-  border-radius:10px;
+  border-radius:12px;
   background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.18) 40%, rgba(255,255,255,0.06));
   mix-blend-mode: overlay;
   transform: translateX(-110%);
-  transition: none;
   pointer-events:none;
 }
 @keyframes nameShimmer { from { transform: translateX(-120%) } to { transform: translateX(120%) } }
 .name.shimmer::after { animation: nameShimmer 1800ms linear infinite; }
+
+/* subtitle */
+.lead{margin:0 0 22px;color:var(--muted);font-size:15px}
 
 /* CTA layout */
 .cta-row{
@@ -274,7 +314,8 @@ h1{
 @media (max-width:560px){
   .card{ padding:28px 18px; border-radius:14px; }
   h1{ font-size:24px }
-  .name{ font-size:30px; padding:2px 8px; }
+  .proposal{ font-size:20px }
+  .name{ font-size:34px; padding:2px 8px; }
   .sticker{ width:64px; height:64px }
   .sticker-1{ left:-20px; top:-22px }
   .sticker-3{ left: -6px; bottom:-16px }
