@@ -3,130 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Will You Be My Valentine?</title>
+  <title>Will you be my Valentine?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Sacramento&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="scene">
-    <div class="bg-hearts" aria-hidden="true">
-      <div class="heart h1"></div>
-      <div class="heart h2"></div>
-      <div class="heart h3"></div>
-      <div class="heart h4"></div>
-      <div class="sparkle s1"></div>
-      <div class="sparkle s2"></div>
+  <main class="page">
+    <div class="card" role="main" aria-labelledby="title">
+      <h1 id="title" class="title">Will you be my Valentine?</h1>
+      <p class="subtitle">Choose honestly... 💞</p>
+
+      <!-- persuasive tagline updated each time user tries "No" -->
+      <div id="persuade" class="persuade" aria-live="polite" aria-atomic="true"></div>
+
+      <div id="buttons" class="buttons" aria-hidden="false">
+        <button id="yesBtn" class="btn btn-yes" aria-label="Yes, I will be your Valentine">Yes 💘</button>
+        <button id="noBtn" class="btn btn-no" aria-label="No" tabindex="0">No 😅</button>
+      </div>
+
+      <p class="hint">You can decorate this card later — try not to click No 😉</p>
     </div>
-
-    <main class="page">
-      <div class="card" id="card" role="main" aria-labelledby="title">
-        <header class="card-top">
-          <h1 id="title" class="title">Will you be my Valentine?</h1>
-          <p class="subtitle">Pick one — and decorate this card with stickers 💞</p>
-
-          <!-- Persuasion message: updated each time user clicks "No" -->
-          <div id="persuade" class="persuade" aria-live="polite" aria-atomic="true"></div>
-        </header>
-
-        <div class="illustration" aria-hidden="true">
-          <img id="illustrationImg" class="cute-photo" src="assets/cute-photo.jpg"
-               alt="Cute couple" onerror="this.style.display='none'; document.getElementById('fallback-svg').style.display='block'">
-          <svg id="fallback-svg" viewBox="0 0 240 200" class="cute-heart" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="cute heart" style="display:none;">
-            <g transform="translate(40,8)">
-              <path class="heart-fill" d="M80 30c-12-22-52-24-64 6-12 30 24 64 64 96 40-32 76-66 64-96-12-30-52-28-64-6z"/>
-              <circle cx="55" cy="52" r="6" fill="#fff"/>
-              <circle cx="55" cy="52" r="3.5" fill="#2e1028"/>
-              <circle cx="25" cy="52" r="6" fill="#fff"/>
-              <circle cx="25" cy="52" r="3.5" fill="#2e1028"/>
-              <path d="M30 68 Q40 80 60 68" stroke="#2e1028" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              <ellipse cx="72" cy="62" rx="8" ry="5" fill="#ffd1e3" opacity="0.8"/>
-              <ellipse cx="8" cy="62" rx="8" ry="5" fill="#ffd1e3" opacity="0.8"/>
-            </g>
-          </svg>
-        </div>
-
-        <div class="buttons" id="buttons" aria-hidden="false">
-          <button id="yesBtn" class="btn btn-yes" aria-label="Yes, I will be your Valentine">
-            <svg class="icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 21s-7.5-4.7-10-8.1C-0.2 7.8 4 3 8 5.1 10.6 6.6 12 9 12 9s1.4-2.4 4-3.9c4-2.1 8.2 2.7 6 7.9C19.5 16.3 12 21 12 21z"/></svg>
-            Yes 💘
-          </button>
-          <button id="noBtn" class="btn btn-no" aria-label="No" tabindex="0">No 😅</button>
-        </div>
-
-        <footer class="foot">
-          <p class="small">Made with <span class="heartsmall">♥</span> — decorate & try hitting "No" 😉</p>
-        </footer>
-
-        <!-- sticker layer inside card -->
-        <div id="sticker-layer" class="sticker-layer" aria-hidden="false"></div>
-      </div>
-    </main>
-
-    <!-- Sticker picker (right side) -->
-    <aside class="sticker-picker" id="stickerPicker" aria-label="Sticker picker">
-      <button class="sticker-toggle" id="stickerToggle" aria-pressed="true" title="Stickers">✦</button>
-      <div class="sticker-list" id="stickerList" role="list">
-        <button class="sticker-btn" data-type="heart" title="Heart" aria-label="Heart sticker" role="listitem">
-          <svg viewBox="0 0 64 64" class="sticker-thumb"><path fill="#ff4d94" d="M32 52s-22-12.6-26-23.2C2 16.6 13.6 8 24 14c5.1 3.2 8 7.6 8 7.6s2.9-4.4 8-7.6c10.4-6 22 2.6 18 14.8C54 39.4 32 52 32 52z"/></svg>
-        </button>
-        <button class="sticker-btn" data-type="cupid" title="Cupid" aria-label="Cupid sticker" role="listitem">
-          <svg viewBox="0 0 64 64" class="sticker-thumb"><g fill="none" stroke="#ff6aa6" stroke-width="2"><path d="M18 44c4-6 18-14 26-8"/><path d="M42 26c2-4 6-6 10-4"/><circle cx="46" cy="20" r="3" fill="#ff6aa6"/></g></svg>
-        </button>
-        <button class="sticker-btn" data-type="rose" title="Rose" aria-label="Rose sticker" role="listitem">
-          <svg viewBox="0 0 64 64" class="sticker-thumb"><g><path fill="#ff7fb5" d="M34 18c-6-4-14-4-16 2 6 0 8 6 16 8 8-2 10-8 16-8-2-6-10-6-16-2z"/><path fill="#2e1028" d="M30 28s-5 10-4 18c1 8 6 14 6 14s5-6 6-14c1-8-4-18-8-18z"/></g></svg>
-        </button>
-        <button class="sticker-btn" data-type="balloon" title="Balloon" aria-label="Balloon sticker" role="listitem">
-          <svg viewBox="0 0 64 64" class="sticker-thumb"><g><ellipse cx="32" cy="24" rx="12" ry="14" fill="#ffb3d9"/><path d="M32 38v8" stroke="#c32b6a" stroke-width="2"/><path d="M30 46c2 4 6 6 6 6" stroke="#c32b6a" stroke-width="2" fill="none"/></g></svg>
-        </button>
-        <button class="sticker-btn" data-type="star" title="Star" aria-label="Star sticker" role="listitem">
-          <svg viewBox="0 0 64 64" class="sticker-thumb"><path d="M32 10l6.5 12L52 26l-11 9 3 14L32 44 20 49l3-14L12 26l13.5-4L32 10z" fill="#ffd36b"/></svg>
-        </button>
-      </div>
-      <div class="sticker-help">Tap a sticker to add. Drag to move. Double-click to remove.</div>
-    </aside>
-
-    <!-- Modal shown when Yes is clicked -->
-    <div id="popup" class="popup" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="popup-inner" role="document">
-        <h2>Yay! 💖</h2>
-        <p>You made my heart melt. Happy Valentine's Day! 🥰</p>
-        <div class="popup-actions">
-          <button id="closePopup" class="btn btn-close">Hug 🤗</button>
-          <button id="shareBtn" class="btn btn-share">Send a kiss 😘</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hidden SVG templates (cloned by JS) -->
-  <div id="sticker-templates" style="display:none;" aria-hidden="true">
-    <svg id="tpl-heart" viewBox="0 0 64 64"><path d="M32 52s-22-12.6-26-23.2C2 16.6 13.6 8 24 14c5.1 3.2 8 7.6 8 7.6s2.9-4.4 8-7.6c10.4-6 22 2.6 18 14.8C54 39.4 32 52 32 52z" fill="#ff4d94" /></svg>
-
-    <svg id="tpl-cupid" viewBox="0 0 64 64">
-      <g transform="translate(0,0)" fill="none" stroke="#ff6aa6" stroke-width="2">
-        <path d="M18 44c4-6 18-14 26-8"/>
-        <path d="M42 26c2-4 6-6 10-4"/>
-        <circle cx="46" cy="20" r="3" fill="#ff6aa6"/>
-      </g>
-    </svg>
-
-    <svg id="tpl-rose" viewBox="0 0 64 64">
-      <g>
-        <path fill="#ff7fb5" d="M34 18c-6-4-14-4-16 2 6 0 8 6 16 8 8-2 10-8 16-8-2-6-10-6-16-2z"/>
-        <path fill="#2e1028" d="M30 28s-5 10-4 18c1 8 6 14 6 14s5-6 6-14c1-8-4-18-8-18z"/>
-      </g>
-    </svg>
-
-    <svg id="tpl-balloon" viewBox="0 0 64 64">
-      <g>
-        <ellipse cx="32" cy="24" rx="12" ry="14" fill="#ffb3d9"/>
-        <path d="M32 38v8" stroke="#c32b6a" stroke-width="2"/>
-        <path d="M30 46c2 4 6 6 6 6" stroke="#c32b6a" stroke-width="2" fill="none"/>
-      </g>
-    </svg>
-
-    <svg id="tpl-star" viewBox="0 0 64 64"><path d="M32 10l6.5 12L52 26l-11 9 3 14L32 44 20 49l3-14L12 26l13.5-4L32 10z" fill="#ffd36b"/></svg>
-  </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
