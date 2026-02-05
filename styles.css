@@ -131,7 +131,7 @@ body{
 /* Heading + text */
 h1.title{
   margin:0 0 8px;
-  font-size:44px;          /* increased */
+  font-size:44px;
   letter-spacing:-0.6px;
   color:#222;
   line-height:1.02;
@@ -147,20 +147,32 @@ h1.title{
   font-family: "Playfair Display", serif;
   font-weight:700;
   color: #6B1550; /* fallback if gradient not visible */
-  font-size:40px; /* increased */
+  font-size:40px;
   text-shadow: 0 6px 18px rgba(107,21,80,0.06);
   padding:6px 12px;
   border-radius:10px;
+  transition: opacity 220ms ease, transform 240ms ease;
+}
+
+/* quick fade animation applied when text changes */
+.proposal.fade {
+  opacity:0;
+  transform: translateY(-6px);
+}
+.proposal.fade-in {
+  opacity:1;
+  transform: translateY(0);
+  transition: opacity 320ms ease, transform 320ms ease;
 }
 
 /* Name highlight (Kulsum): larger */
 .name{
   display:inline-block;
   font-family: "Great Vibes", cursive;
-  font-size:72px; /* much larger */
+  font-size:72px;
   margin-left:6px;
   color:transparent;
-  background: linear-gradient(90deg, #FF6B9A, #FFB36F 70%); /* warm pink -> gold */
+  background: linear-gradient(90deg, #FF6B9A, #FFB36F 70%);
   -webkit-background-clip: text;
   background-clip: text;
   position:relative;
@@ -229,8 +241,8 @@ h1.title{
   text-transform:capitalize;
 }
 
-/* Yes button: animated gradient background + glow */
-.btn-yes{
+/* Yes and No both share this colorful gradient now */
+.btn-yes, .btn-no {
   background: linear-gradient(90deg,#FF7BA6 0%, #FFCC78 40%, #7EC8FF 100%);
   color:white;
   box-shadow: var(--accent-glow), 0 8px 30px rgba(126,200,255,0.06);
@@ -242,8 +254,8 @@ h1.title{
   50%{ background-position:100% 50% }
   100%{ background-position:0% 50% }
 }
-.btn-yes:hover{ transform: translateY(-5px) scale(1.03); filter:brightness(1.02) }
-.btn-yes:active{ transform: translateY(0) scale(.99) }
+.btn-yes:hover, .btn-no:hover{ transform: translateY(-5px) scale(1.03); filter:brightness(1.02) }
+.btn-yes:active, .btn-no:active{ transform: translateY(0) scale(.99) }
 
 /* No button wrapper and button absolute positioning */
 .no-wrap{
@@ -259,10 +271,7 @@ h1.title{
   left: calc(50% - 52px);
   top: 0;
   width:104px;
-  background: linear-gradient(180deg,#fff #fff);
-  border: 1px solid #F0E9ED;
-  color:#444;
-  box-shadow: 0 8px 24px rgba(18,18,18,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
   transition: transform 360ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms;
   font-weight:700;
   border-radius:14px;
