@@ -3,7 +3,7 @@
   --accent: #FF6B9A;
   --accent-2: #FF9BC2;
   --muted: #6B6B6B;
-  --card-bg: rgba(255,255,255,0.9);
+  --card-bg: rgba(255,255,255,0.92);
   --shadow: 0 12px 40px rgba(18,18,18,0.08);
   --radius: 20px;
   --ease: cubic-bezier(.2,.9,.3,1);
@@ -40,21 +40,20 @@ body{
 /* Reusable heart svg inside each .bg-heart */
 .bg-heart{
   position:absolute;
-  width:16px;
-  height:16px;
   pointer-events:none;
-  opacity:0;
+  opacity:0.9; /* more visible */
   transform-origin:center;
   will-change: transform, opacity;
-  filter: drop-shadow(0 6px 12px rgba(255,80,120,0.06));
+  filter: drop-shadow(0 8px 18px rgba(255,80,120,0.10));
+  mix-blend-mode: screen;
 }
 
 /* rise animation for hearts floating up slowly */
 @keyframes heartRise {
-  0% { transform: translateY(0) scale(0.8) rotate(-10deg); opacity:0; }
-  8% { opacity:1; }
-  60% { opacity:0.9; }
-  100% { transform: translateY(-120vh) scale(1.15) rotate(30deg); opacity:0; }
+  0% { transform: translateY(0) scale(0.9) rotate(-10deg); opacity:0 }
+  6% { opacity:0.9 }
+  60% { opacity:0.9 }
+  100% { transform: translateY(-120vh) scale(1.12) rotate(30deg); opacity:0 }
 }
 
 /* Page & card */
@@ -249,13 +248,29 @@ h1{
   background: linear-gradient(180deg,#fff 0%, #fff 100%);
   border-radius:14px;
   padding:28px;
-  width: min(520px, 92%);
+  width: min(560px, 94%);
   text-align:center;
   box-shadow: 0 28px 80px rgba(11,11,14,0.18);
   transform: translateY(18px) scale(.98);
   transition: transform 320ms var(--ease), opacity 320ms var(--ease);
 }
 .modal.show .modal-panel{ transform: translateY(0) scale(1) }
+
+/* the image shown above "Yay" */
+.yay-img{
+  width:140px;
+  height:auto;
+  display:block;
+  margin: 0 auto 8px;
+  opacity:0;
+  transform: translateY(-8px) scale(.9);
+  transition: transform 360ms cubic-bezier(.2,.9,.3,1), opacity 360ms;
+  border-radius:12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+}
+
+/* when shown */
+.yay-img.show{ opacity:1; transform: translateY(0) scale(1); }
 
 /* modal close */
 .modal-close{
@@ -308,6 +323,11 @@ h1{
   transform-origin:center;
   border-radius:2px;
   z-index:2500;
+}
+
+/* make heart particles a bit rounder */
+.particle.heart{
+  border-radius: 50%;
 }
 
 /* Responsive tweaks */
