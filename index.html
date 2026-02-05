@@ -9,32 +9,11 @@
 </head>
 <body>
   <main class="scene">
-    <!-- Cute stickers (inline SVGs) -->
+    <!-- Image stickers -->
     <div class="stickers" aria-hidden="true">
-      <svg class="sticker s1" viewBox="0 0 64 64" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" fill-rule="evenodd">
-          <circle cx="32" cy="32" r="30" fill="#FFD7E6"/>
-          <path d="M43 22c-3.3-6-12.7-6-16 0-3.3-6-12.7-6-16 0-3 5.4 1.5 12 8 16 6.5-4 11-10.6 8-16z" fill="#FF6B9A"/>
-        </g>
-      </svg>
-
-      <svg class="sticker s2" viewBox="0 0 64 64" width="64" height="64" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" fill-rule="evenodd">
-          <rect rx="12" width="64" height="64" fill="#FFF3CE"/>
-          <path d="M20 36c6-8 18-8 24 0 6-8 18-8 24 0" stroke="#FFB86B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="scale(.9) translate(3,4)"/>
-          <circle cx="20" cy="20" r="3" fill="#FF6B9A"/>
-          <circle cx="44" cy="18" r="3" fill="#FF6B9A"/>
-        </g>
-      </svg>
-
-      <svg class="sticker s3" viewBox="0 0 64 64" width="70" height="70" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" fill-rule="evenodd">
-          <rect width="64" height="64" rx="10" fill="#E6F7FF"/>
-          <path d="M22 28c3.5-3 8-3 11.5 0 3.5-3 8-3 11.5 0" stroke="#69C0FF" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="24" cy="24" r="2.5" fill="#555"/>
-          <circle cx="40" cy="24" r="2.5" fill="#555"/>
-        </g>
-      </svg>
+      <img src="assets/sticker1.svg" class="sticker s1" alt="">
+      <img src="assets/sticker2.svg" class="sticker s2" alt="">
+      <img src="assets/sticker3.svg" class="sticker s3" alt="">
     </div>
 
     <section class="card" role="region" aria-labelledby="proposal-heading">
@@ -43,13 +22,14 @@
       <p class="sub">I made this just for you — full of cute stickers and love 💕</p>
 
       <div class="cta-wrap">
-        <button id="proposal-btn" class="proposal" draggable="false" aria-label="Proposal button">
-          Yes? 💖
-        </button>
+        <div class="cta-area" id="cta-area" aria-hidden="false">
+          <button id="yes-btn" class="proposal" aria-label="Yes button">Yes? 💖</button>
+          <button id="no-btn" class="no-btn" aria-label="No button">No 😅</button>
+        </div>
       </div>
     </section>
 
-    <!-- Modal shown when button clicked -->
+    <!-- Modal shown when Yes clicked -->
     <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="modal-card" role="document">
         <h2>Yay! 🌸</h2>
