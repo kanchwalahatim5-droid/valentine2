@@ -3,11 +3,12 @@
   --accent: #FF6B9A;
   --accent-2: #FF9BC2;
   --muted: #6B6B6B;
-  --card-bg: rgba(255,255,255,0.92);
-  --shadow: 0 12px 40px rgba(18,18,18,0.08);
+  --card-bg: rgba(255,255,255,0.94);
+  --shadow: 0 14px 44px rgba(18,18,18,0.08);
   --radius: 20px;
   --ease: cubic-bezier(.2,.9,.3,1);
-  --accent-glow: 0 10px 40px rgba(255,107,154,0.14);
+  --accent-glow: 0 12px 48px rgba(255,107,154,0.14);
+  --rainbow: linear-gradient(90deg, #FF6B9A, #FF9BC2, #FFD36E, #69C0FF, #B38CFF);
 }
 
 /* Base */
@@ -27,6 +28,22 @@ body{
   overflow-x:hidden;
 }
 
+/* Animated gradient text helper */
+.colorful{
+  background: var(--rainbow);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbowShift 6s linear infinite;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+@keyframes rainbowShift{
+  0%{ background-position:0% 50% }
+  50%{ background-position:100% 50% }
+  100%{ background-position:0% 50% }
+}
+
 /* Background hearts container */
 .bg-hearts{
   position:fixed;
@@ -41,7 +58,7 @@ body{
 .bg-heart{
   position:absolute;
   pointer-events:none;
-  opacity:0.9; /* more visible */
+  opacity:0.95; /* more visible */
   transform-origin:center;
   will-change: transform, opacity;
   filter: drop-shadow(0 8px 18px rgba(255,80,120,0.10));
@@ -51,8 +68,8 @@ body{
 /* rise animation for hearts floating up slowly */
 @keyframes heartRise {
   0% { transform: translateY(0) scale(0.9) rotate(-10deg); opacity:0 }
-  6% { opacity:0.9 }
-  60% { opacity:0.9 }
+  6% { opacity:0.95 }
+  60% { opacity:0.95 }
   100% { transform: translateY(-120vh) scale(1.12) rotate(30deg); opacity:0 }
 }
 
@@ -70,7 +87,7 @@ body{
   opacity:0;
   transition: transform 650ms var(--ease), opacity 650ms var(--ease);
   will-change:transform,opacity;
-  border: 1px solid rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.7);
 }
 
 /* Entrance after page load */
@@ -94,56 +111,75 @@ body{
 
 /* Heading + text */
 /* Proposal line in Playfair Display for elegant serif */
-h1{
-  margin:0 0 6px;
-  font-size:34px;
+h1.title{
+  margin:0 0 8px;
+  font-size:36px;
   letter-spacing:-0.6px;
-  font-weight:600;
   color:#222;
-  line-height:1.05;
+  line-height:1.02;
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:10px;
 }
+
+/* proposal text style */
 .proposal{
   display:inline-block;
   font-family: "Playfair Display", serif;
   font-weight:600;
-  color:#6B1550; /* deep rosy/purple — distinct from name */
-  margin-right:8px;
+  color: #6B1550; /* fallback if gradient not visible */
   font-size:34px;
+  text-shadow: 0 6px 18px rgba(107,21,80,0.06);
+  padding:4px 8px;
+  border-radius:8px;
 }
 
 /* Name highlight (Kulsum): different color and style */
 .name{
   display:inline-block;
   font-family: "Great Vibes", cursive;
-  font-size:48px;
+  font-size:54px;
   margin-left:6px;
   color:transparent;
   background: linear-gradient(90deg, #FF6B9A, #FFB36F 70%); /* warm pink -> gold */
   -webkit-background-clip: text;
   background-clip: text;
   position:relative;
-  padding:2px 12px;
-  border-radius:12px;
+  padding:4px 14px;
+  border-radius:14px;
   transition: transform 360ms var(--ease), box-shadow 300ms var(--ease);
-  box-shadow: 0 10px 32px rgba(255,107,154,0.06);
+  box-shadow: 0 12px 40px rgba(255,107,154,0.06);
+  text-shadow: 0 8px 34px rgba(255,107,154,0.06);
 }
 
-/* animated shimmer behind name */
-.name::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; top:0; bottom:0;
-  border-radius:12px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.18) 40%, rgba(255,255,255,0.06));
-  mix-blend-mode: overlay;
-  transform: translateX(-110%);
-  pointer-events:none;
+/* give the name a subtle floating animation */
+@keyframes nameFloat {
+  0%{ transform: translateY(0) }
+  50%{ transform: translateY(-3px) }
+  100%{ transform: translateY(0) }
 }
-@keyframes nameShimmer { from { transform: translateX(-120%) } to { transform: translateX(120%) } }
-.name.shimmer::after { animation: nameShimmer 1800ms linear infinite; }
+.name{ animation: nameFloat 3.6s ease-in-out infinite; }
 
 /* subtitle */
-.lead{margin:0 0 22px;color:var(--muted);font-size:15px}
+.lead{
+  margin:10px 0 22px;
+  color:var(--muted);
+  font-size:16px;
+  font-family: "Quicksand", sans-serif;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.04);
+}
+
+/* Make lead colorful as well */
+.lead.colorful{
+  font-weight:600;
+  background: linear-gradient(90deg,#FF9BC2, #FFD36E, #69C0FF);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbowShift 6.5s linear infinite;
+}
 
 /* CTA layout */
 .cta-row{
@@ -159,9 +195,9 @@ h1{
 .btn{
   border:0;
   cursor:pointer;
-  padding:12px 22px;
-  font-weight:600;
-  border-radius:14px;
+  padding:12px 26px;
+  font-weight:700;
+  border-radius:18px;
   font-size:16px;
   display:inline-flex;
   align-items:center;
@@ -170,24 +206,26 @@ h1{
   -webkit-tap-highlight-color: transparent;
   transition: transform 260ms var(--ease), box-shadow 200ms var(--ease), opacity 220ms var(--ease);
   will-change:transform;
+  font-family: "Poppins", sans-serif;
+  letter-spacing:0.6px;
+  text-transform:capitalize;
 }
 
-/* Yes button */
+/* Yes button: animated gradient background + glow */
 .btn-yes{
-  background: linear-gradient(90deg,var(--accent) 0%, var(--accent-2) 100%);
+  background: linear-gradient(90deg,#FF7BA6 0%, #FFCC78 40%, #7EC8FF 100%);
   color:white;
-  box-shadow: var(--accent-glow);
+  box-shadow: var(--accent-glow), 0 8px 30px rgba(126,200,255,0.06);
+  background-size: 200% 200%;
+  animation: btnGradient 6s linear infinite;
 }
-.btn-yes:hover{ transform: translateY(-4px) scale(1.02); filter:brightness(1.02) }
+@keyframes btnGradient {
+  0%{ background-position:0% 50% }
+  50%{ background-position:100% 50% }
+  100%{ background-position:0% 50% }
+}
+.btn-yes:hover{ transform: translateY(-5px) scale(1.03); filter:brightness(1.02) }
 .btn-yes:active{ transform: translateY(0) scale(.99) }
-
-/* gentle pulsing for Yes */
-@keyframes pulse {
-  0%{ box-shadow:0 8px 26px rgba(255,107,154,0.22); transform:scale(1) }
-  50%{ box-shadow:0 28px 60px rgba(255,107,154,0.12); transform:scale(1.04) }
-  100%{ box-shadow:0 8px 26px rgba(255,107,154,0.22); transform:scale(1) }
-}
-.btn-yes.pulse{ animation: pulse 2600ms infinite; }
 
 /* No button wrapper and button absolute positioning */
 .no-wrap{
@@ -208,6 +246,8 @@ h1{
   color:#444;
   box-shadow: 0 8px 24px rgba(18,18,18,0.06);
   transition: transform 360ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms;
+  font-weight:700;
+  border-radius:14px;
 }
 
 /* Wiggle used when No button is moving */
@@ -216,7 +256,7 @@ h1{
   50%{ transform: translate3d(calc(var(--tx,0) * -1),calc(var(--ty,0) * -1),0) rotate(4deg) }
   100%{ transform: translate3d(var(--tx,0),var(--ty,0),0) rotate(-4deg) }
 }
-.btn-no.moving{ animation: wiggle 700ms ease-in-out; }
+.btn-no.moving{ animation: wiggle 700ms ease-in-out; transform-origin:center; }
 
 /* Card pulse when No dodges */
 .card.pulse {
@@ -271,6 +311,21 @@ h1{
 
 /* when shown */
 .yay-img.show{ opacity:1; transform: translateY(0) scale(1); }
+
+/* modal title & text fonts */
+.modal-title{
+  font-family: "Great Vibes", cursive;
+  font-size:40px;
+  margin:6px 0;
+  text-shadow: 0 8px 28px rgba(255,107,154,0.06);
+}
+.modal-text{
+  font-family: "Lora", serif;
+  font-size:16px;
+  color:#444;
+  margin:10px 0 18px;
+  line-height:1.5;
+}
 
 /* modal close */
 .modal-close{
@@ -336,6 +391,7 @@ h1{
   h1{ font-size:24px }
   .proposal{ font-size:20px }
   .name{ font-size:34px; padding:2px 8px; }
+  .lead{ font-size:14px }
   .sticker{ width:64px; height:64px }
   .sticker-1{ left:-20px; top:-22px }
   .sticker-3{ left: -6px; bottom:-16px }
