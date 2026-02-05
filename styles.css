@@ -3,192 +3,192 @@
   --accent: #FF6B9A;
   --accent-2: #FF9BC2;
   --muted: #6B6B6B;
+  --card-bg: rgba(255,255,255,0.85);
+  --glass: rgba(255,255,255,0.6);
+  --shadow: 0 8px 30px rgba(18,18,18,0.08);
+  --radius: 18px;
+  --ease: cubic-bezier(.2,.9,.3,1);
 }
 
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   background: var(--bg);
-  color:#222;
+  color:#111;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  user-select:none;
-}
-
-.scene{
-  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:32px;
-  position:relative;
-  overflow:hidden;
-}
-
-/* Stickers */
-.stickers{ position:absolute; inset:0; pointer-events:none; z-index:0; }
-.sticker{
-  position:absolute;
-  transform-origin:center;
-  opacity:.98;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.06));
-  width:96px;
-  height:96px;
-}
-.s1{ top:6%; left:6%; transform:rotate(-6deg) scale(1); }
-.s2{ bottom:8%; right:8%; transform:rotate(10deg) scale(.95); }
-.s3{ top:18%; right:14%; transform:rotate(-12deg) scale(.9); }
-
-/* Card */
-.card{
-  background: rgba(255,255,255,0.98);
-  border-radius:20px;
   padding:36px;
-  width:min(720px, 94vw);
-  max-width:720px;
+}
+
+/* Page & card */
+.page{width:100%;max-width:960px;padding:16px}
+.card{
+  position:relative;
+  overflow:visible;
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:44px 32px;
+  box-shadow:var(--shadow);
   text-align:center;
-  box-shadow: 0 12px 40px rgba(255,107,154,0.08);
-  position:relative;
-  z-index:2;
+  transform: translateY(18px) scale(.99);
+  opacity:0;
+  transition: transform 650ms var(--ease), opacity 650ms var(--ease);
+  will-change:transform,opacity;
+  border: 1px solid rgba(255,255,255,0.6);
 }
 
-.heading{
-  font-family: "Pacifico", cursive;
-  font-size: clamp(28px, 6vw, 48px);
-  margin:0 0 8px;
-  color:#FF4D88;
-  letter-spacing:0.4px;
+/* Entrance after page load */
+.card.enter {
+  transform: translateY(0) scale(1);
+  opacity:1;
 }
 
-/* Highlighted name */
-.name{
-  color: var(--accent-2);
-  padding: 6px 10px;
-  border-radius: 10px;
-  font-weight:700;
-}
+/* Heading + text */
+h1{margin:0 0 8px;font-size:28px;letter-spacing:-0.5px}
+.lead{margin:0 0 22px;color:var(--muted)}
 
-/* Subtext */
-.sub{
-  color:var(--muted);
-  margin:0 0 22px;
-}
-
-/* CTA area: contains both buttons and constrains No button movement */
-.cta-wrap{ display:flex; justify-content:center; gap:12px; align-items:center; margin-top:6px; }
-.cta-area{
-  position:relative;
-  width:min(420px,78vw);
-  height:92px;
+/* CTA layout */
+.cta-row{
   display:flex;
   align-items:center;
   justify-content:center;
   gap:18px;
-}
-
-/* Primary Yes button */
-.proposal{
-  appearance:none;
-  -webkit-appearance:none;
-  border: none;
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
-  color:white;
-  padding:16px 28px;
-  border-radius:999px;
-  font-size:18px;
-  cursor:pointer;
-  box-shadow: 0 8px 24px rgba(255,107,154,0.18);
-  transition: transform .15s ease, box-shadow .15s ease;
-  outline:none;
-  z-index:3;
   position:relative;
-  user-select:none;
+  height:72px; /* room for absolute no button */
 }
 
-/* Evasive No button */
-.no-btn{
-  position:absolute;
-  left: calc(50% + 140px);
-  transform: translate(-50%, 0);
-  top: 50%;
-  transform-origin:center;
-  transform: translate(-50%,-50%);
-  appearance:none;
-  border: 2px solid rgba(0,0,0,0.06);
-  background: #fff;
-  color:#333;
-  padding:12px 18px;
-  border-radius:999px;
-  font-size:16px;
+/* Buttons */
+.btn{
+  border:0;
   cursor:pointer;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  transition: transform .22s cubic-bezier(.2,.9,.3,1), left .22s, top .22s;
-  z-index:4;
+  padding:12px 22px;
+  font-weight:600;
+  border-radius:14px;
+  font-size:16px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   user-select:none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 260ms var(--ease), box-shadow 200ms var(--ease), opacity 220ms var(--ease);
+  will-change:transform;
 }
 
-/* small active feedback (but we still dodge) */
-.no-btn:active{ transform: scale(.98) translate(-50%,-50%); }
+/* Yes button */
+.btn-yes{
+  background: linear-gradient(90deg,var(--accent) 0%, var(--accent-2) 100%);
+  color:white;
+  box-shadow: 0 6px 18px rgba(255,107,154,0.28);
+}
+.btn-yes:hover{ transform: translateY(-3px) scale(1.02); }
+.btn-yes:active{ transform: translateY(0) scale(.99) }
 
-/* modal */
+/* gentle pulsing for Yes */
+@keyframes pulse {
+  0%{ box-shadow:0 6px 18px rgba(255,107,154,0.24); transform:scale(1) }
+  50%{ box-shadow:0 18px 40px rgba(255,107,154,0.16); transform:scale(1.03) }
+  100%{ box-shadow:0 6px 18px rgba(255,107,154,0.24); transform:scale(1) }
+}
+.btn-yes.pulse{ animation: pulse 2600ms infinite; }
+
+/* No button wrapper and button absolute positioning */
+.no-wrap{
+  position:relative;
+  width:170px;
+  height:48px;
+  display:inline-block;
+  vertical-align:middle;
+  pointer-events:auto;
+}
+.btn-no{
+  position:absolute;
+  left: calc(50% - 52px);
+  top: 0;
+  width:104px;
+  background: linear-gradient(180deg,#fff #fff);
+  border: 1px solid #E8E7EA;
+  color:#444;
+  box-shadow: 0 6px 18px rgba(18,18,18,0.06);
+}
+
+/* Wiggle used when No button is moving */
+@keyframes wiggle {
+  0%{ transform: translate3d(var(--tx,0),var(--ty,0),0) rotate(-3deg) }
+  50%{ transform: translate3d(calc(var(--tx,0) * -1),calc(var(--ty,0) * -1),0) rotate(3deg) }
+  100%{ transform: translate3d(var(--tx,0),var(--ty,0),0) rotate(-3deg) }
+}
+.btn-no.moving{ animation: wiggle 700ms ease-in-out; }
+
+/* Modal */
 .modal{
   position:fixed;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:rgba(0,0,0,0.28);
-  visibility:hidden;
+  background: rgba(8,8,10,0.36);
   opacity:0;
-  transition: opacity .18s ease, visibility .18s ease;
-  z-index:10;
   pointer-events:none;
+  transition: opacity 240ms var(--ease);
 }
-.modal[aria-hidden="false"]{
-  visibility:visible;
+.modal.show{
   opacity:1;
   pointer-events:auto;
 }
-
-.modal-card{
-  background:white;
-  padding:22px;
+.modal-panel{
+  background: white;
   border-radius:14px;
-  width:min(420px,90vw);
+  padding:22px;
+  width: min(520px, 92%);
   text-align:center;
-  box-shadow:0 18px 40px rgba(0,0,0,0.12);
+  box-shadow: 0 24px 60px rgba(11,11,14,0.18);
+  transform: translateY(18px) scale(.98);
+  transition: transform 300ms var(--ease), opacity 300ms var(--ease);
 }
+.modal.show .modal-panel{ transform: translateY(0) scale(1) }
 
-.modal h2{ margin:0 0 8px; color:var(--accent); font-family:Pacifico, cursive; font-size:24px; }
-.modal p{ margin:0 0 16px; color:var(--muted); }
-
-/* buttons in modal */
-.btn-secondary{
+/* modal close */
+.modal-close{
+  position:absolute;
+  right:14px;
+  top:14px;
+  border:0;
   background:transparent;
-  border:1px solid #f0d6df;
-  padding:8px 14px;
-  border-radius:10px;
-  color:var(--accent);
+  font-size:26px;
+  line-height:1;
   cursor:pointer;
+  color:#666;
 }
 
-/* footer */
-.credit{
-  position:fixed;
-  bottom:12px;
-  left:12px;
-  font-size:12px;
-  color:rgba(0,0,0,0.35);
-  z-index:1;
+/* Stickers */
+.sticker{
+  position:absolute;
+  width:90px;
+  height:90px;
+  pointer-events:none;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.06));
+  transform-origin:center;
 }
 
-/* responsive tweaks */
-@media (max-width:520px){
-  .stickers .sticker{ display:none; } /* simplify on small screens */
-  .card{ padding:20px; border-radius:16px;}
-  .heading{ font-size:28px; }
-  .proposal{ padding:14px 22px; font-size:16px; }
-  .cta-area{ height:84px; }
+/* positions & floating animations */
+.sticker-1{ left:-36px; top:-36px; animation: float1 5.4s ease-in-out infinite; }
+.sticker-2{ right:-22px; top:-28px; width:76px; animation: float2 6.2s ease-in-out infinite; }
+.sticker-3{ left: -10px; bottom:-22px; width:110px; animation: float3 6.8s ease-in-out infinite; }
+
+@keyframes float1 { 0%{ transform: translateY(0) rotate(-2deg)} 50%{ transform: translateY(-8px) rotate(4deg)} 100%{ transform: translateY(0) rotate(-2deg)} }
+@keyframes float2 { 0%{ transform: translateY(0) rotate(1deg) } 50%{ transform: translateY(-10px) rotate(-2deg) } 100%{ transform: translateY(0) rotate(1deg) } }
+@keyframes float3 { 0%{ transform: translateY(0) rotate(-1deg) } 50%{ transform: translateY(10px) rotate(3deg) } 100%{ transform: translateY(0) rotate(-1deg) } }
+
+/* Responsive tweaks */
+@media (max-width:560px){
+  .card{ padding:28px 18px; border-radius:14px; }
+  .sticker{ width:64px; height:64px }
+  .sticker-1{ left:-20px; top:-22px }
+  .sticker-3{ left: -6px; bottom:-16px }
+  .no-wrap{ width:150px }
 }
