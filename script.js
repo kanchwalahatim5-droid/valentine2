@@ -11,14 +11,11 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
 // Proposal phrases to rotate when user tries to click No
 const PROPOSAL_PHRASES = [
   "Will you be my Valentine,",
-  "Will you make my day,",
-  "Will you share smiles with me,",
-  "Will you hold my heart,",
-  "Will you be mine,",
-  "Will you dance with me,",
-  "Will you be my sunshine,",
+  "i promise you ll like it,",
+  "come on. click yes!,",
+  "yo can't escape destiny!,",
+  "just click yes already,",
   "Will you say 'yes' to me,",
-  "Will you keep me company,",
   "Will you be my favorite person,"
 ];
 
