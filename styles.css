@@ -109,48 +109,66 @@ body{
 }
 .card.enter::before{ opacity:1 }
 
+/* NEW: hero image above proposal */
+.hero-img{
+  width:220px;
+  max-width:44%;
+  height:auto;
+  display:block;
+  margin: -10px auto 8px;
+  opacity:0;
+  transform: translateY(-8px) scale(.96);
+  transition: transform 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms;
+  border-radius:14px;
+  box-shadow: 0 14px 48px rgba(0,0,0,0.12);
+  will-change: transform, opacity;
+}
+.hero-img.show {
+  opacity:1;
+  transform: translateY(0) scale(1);
+}
+
 /* Heading + text */
-/* Proposal line in Playfair Display for elegant serif */
 h1.title{
   margin:0 0 8px;
-  font-size:36px;
+  font-size:44px;          /* increased */
   letter-spacing:-0.6px;
   color:#222;
   line-height:1.02;
   display:flex;
   align-items:baseline;
   justify-content:center;
-  gap:10px;
+  gap:16px;
 }
 
 /* proposal text style */
 .proposal{
   display:inline-block;
   font-family: "Playfair Display", serif;
-  font-weight:600;
+  font-weight:700;
   color: #6B1550; /* fallback if gradient not visible */
-  font-size:34px;
+  font-size:40px; /* increased */
   text-shadow: 0 6px 18px rgba(107,21,80,0.06);
-  padding:4px 8px;
-  border-radius:8px;
+  padding:6px 12px;
+  border-radius:10px;
 }
 
-/* Name highlight (Kulsum): different color and style */
+/* Name highlight (Kulsum): larger */
 .name{
   display:inline-block;
   font-family: "Great Vibes", cursive;
-  font-size:54px;
+  font-size:72px; /* much larger */
   margin-left:6px;
   color:transparent;
   background: linear-gradient(90deg, #FF6B9A, #FFB36F 70%); /* warm pink -> gold */
   -webkit-background-clip: text;
   background-clip: text;
   position:relative;
-  padding:4px 14px;
+  padding:6px 18px;
   border-radius:14px;
   transition: transform 360ms var(--ease), box-shadow 300ms var(--ease);
   box-shadow: 0 12px 40px rgba(255,107,154,0.06);
-  text-shadow: 0 8px 34px rgba(255,107,154,0.06);
+  text-shadow: 0 10px 40px rgba(255,107,154,0.06);
 }
 
 /* give the name a subtle floating animation */
@@ -163,10 +181,10 @@ h1.title{
 
 /* subtitle */
 .lead{
-  margin:10px 0 22px;
+  margin:12px 0 22px;
   color:var(--muted);
-  font-size:16px;
-  font-family: "Quicksand", sans-serif;
+  font-size:18px;
+  font-family: "Poppins", sans-serif;
   text-shadow: 0 3px 10px rgba(0,0,0,0.04);
 }
 
@@ -320,7 +338,7 @@ h1.title{
   text-shadow: 0 8px 28px rgba(255,107,154,0.06);
 }
 .modal-text{
-  font-family: "Lora", serif;
+  font-family: "Poppins", sans-serif;
   font-size:16px;
   color:#444;
   margin:10px 0 18px;
@@ -386,11 +404,17 @@ h1.title{
 }
 
 /* Responsive tweaks */
+@media (max-width:880px){
+  h1.title{ font-size:34px; gap:10px; }
+  .proposal{ font-size:30px; padding:4px 8px; }
+  .name{ font-size:52px; padding:4px 12px; }
+  .hero-img{ width:180px; max-width:46%; }
+}
 @media (max-width:560px){
   .card{ padding:28px 18px; border-radius:14px; }
-  h1{ font-size:24px }
-  .proposal{ font-size:20px }
-  .name{ font-size:34px; padding:2px 8px; }
+  h1.title{ font-size:22px; display:block; text-align:center }
+  .proposal{ font-size:18px; display:block; margin-bottom:6px; }
+  .name{ font-size:36px; display:block; margin:0 auto; padding:2px 8px; }
   .lead{ font-size:14px }
   .sticker{ width:64px; height:64px }
   .sticker-1{ left:-20px; top:-22px }
