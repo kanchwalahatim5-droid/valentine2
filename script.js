@@ -1,11 +1,26 @@
 // Evasive "No" button logic + modal + confetti/particles + background hearts + shower hearts
-// Also handles the hero image pop-in above the proposal.
+// Also handles proposal-line swap on No attempts and makes Yes/No same color
+
 // Config
 const DODGE_DISTANCE = 120;        // px - how close the pointer can get before No dodges
 const MOVE_DISTANCE = 120;         // px - how far to attempt to move each dodge
 const MAX_MOVES_BEFORE_HOLD = 999; // set lower to allow clicks after N attempts
 const BG_HEART_COUNT = 60;         // background hearts
 const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
+
+// Proposal phrases to rotate when user tries to click No
+const PROPOSAL_PHRASES = [
+  "Will you be my Valentine,",
+  "Will you make my day,",
+  "Will you share smiles with me,",
+  "Will you hold my heart,",
+  "Will you be mine,",
+  "Will you dance with me,",
+  "Will you be my sunshine,",
+  "Will you say 'yes' to me,",
+  "Will you keep me company,",
+  "Will you be my favorite person,"
+];
 
 (function () {
   const yesBtn = document.getElementById('yes-btn');
@@ -20,6 +35,7 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
   const bgHearts = document.querySelector('.bg-hearts');
   const yayImg = document.getElementById('yay-img');
   const heroImg = document.getElementById('hero-img');
+  const proposalEl = document.getElementById('proposal');
 
   // Entrance animation
   requestAnimationFrame(() => {
@@ -41,6 +57,7 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
   // Keep internal state
   let moves = 0;
   let isHolding = false;
+  let lastPhraseIndex = 0;
 
   // Compute bounds the No button may occupy (inside the card, with padding)
   function computeBounds() {
@@ -95,8 +112,24 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
     noBtn.style.setProperty('--ty', ty);
   }
 
+  // Change the proposal line to the next phrase with a small fade animation
+  function changeProposalPhrase() {
+    if (!proposalEl) return;
+    // pick next index (avoid immediate repeat)
+    lastPhraseIndex = (lastPhraseIndex + 1) % PROPOSAL_PHRASES.length;
+    // fade out
+    proposalEl.classList.add('fade');
+    // After short delay swap text and fade back in
+    setTimeout(() => {
+      proposalEl.textContent = PROPOSAL_PHRASES[lastPhraseIndex];
+      proposalEl.classList.remove('fade');
+      proposalEl.classList.add('fade-in');
+      setTimeout(() => proposalEl.classList.remove('fade-in'), 380);
+    }, 220);
+  }
+
   // When pointer/touch gets near, move the No button away
-  function handlePointer(clientX, clientY) {
+  function handlePointer(clientX, clientY, triggerPhraseChange = false) {
     if (isHolding || moves >= MAX_MOVES_BEFORE_HOLD) return;
     const noCenter = centerOf(noBtn);
     const dx = clientX - noCenter.x;
@@ -125,6 +158,9 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
       // Place animated
       placeNoAt(tryX, tryY);
 
+      // change the proposal if this pointer event is from a direct "try to click/tap"
+      if (triggerPhraseChange) changeProposalPhrase();
+
       moves++;
       if (moves >= MAX_MOVES_BEFORE_HOLD) {
         isHolding = true;
@@ -138,29 +174,32 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
   // Global pointer move (mousemove & touchmove)
   function onMove(e) {
     const p = e.touches ? e.touches[0] : e;
-    handlePointer(p.clientX, p.clientY);
+    handlePointer(p.clientX, p.clientY, false);
   }
 
-  // For touch attempts starting directly on the no button (tap), dodge immediately
+  // For touch attempts starting directly on the no button (tap) or mouse down, dodge immediately and change proposal
   function onNoTouchStart(e) {
     if (isHolding || moves >= MAX_MOVES_BEFORE_HOLD) return;
+    // prevent the default so the button doesn't capture the event before dodge
     e.preventDefault();
     const p = e.touches ? e.touches[0] : e;
-    handlePointer(p.clientX, p.clientY);
+    handlePointer(p.clientX, p.clientY, true);
   }
 
-  // If somebody manages to click No, optionally show a small reaction
+  // If somebody manages to click No, cancel and change proposal line
   function onNoClick(e) {
     if (!isHolding && moves < MAX_MOVES_BEFORE_HOLD) {
-      // cancel the click and display a tiny nudge
       e.preventDefault();
       e.stopPropagation();
+      // small nudge animation
       noBtn.animate([
         { transform: noBtn.style.transform + ' translateX(0)' },
         { transform: noBtn.style.transform + ' translateX(-8px)' },
         { transform: noBtn.style.transform + ' translateX(6px)' },
         { transform: noBtn.style.transform + ' translateX(0)' }
       ], { duration: 360, easing: 'ease-out' });
+      // change the proposal because the user tried to click No
+      changeProposalPhrase();
       return false;
     }
     return true;
@@ -187,7 +226,6 @@ const SHOWER_HEART_COUNT = 48;     // hearts falling from above when Yes clicked
     modal.classList.remove('show');
     modal.setAttribute('aria-hidden', 'true');
     yesBtn.focus();
-    // hide image quickly
     if (yayImg) yayImg.classList.remove('show');
   }
 
