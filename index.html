@@ -6,11 +6,14 @@
   <title>Will you be my Valentine?</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- animated background hearts -->
+  <div class="bg-hearts" aria-hidden="true"></div>
+
   <main class="page">
     <section class="card" id="card" aria-labelledby="title" role="region">
       <!-- Floating stickers (kept in assets/) -->
@@ -18,7 +21,11 @@
       <img class="sticker sticker-2" src="assets/sticker2.svg" alt="kawaii sticker" draggable="false">
       <img class="sticker sticker-3" src="assets/sticker3.svg" alt="cluster sticker" draggable="false">
 
-      <h1 id="title">Will you be my Valentine, <span class="name">Kulsum</span>?</h1>
+      <h1 id="title">
+        <span class="proposal">Will you be my Valentine,</span>
+        <span class="name">Kulsum</span>?
+      </h1>
+
       <p class="lead">I made something cute — pick an answer. One button might be shy 😉</p>
 
       <div class="cta-row" id="cta-row">
