@@ -1,4 +1,4 @@
-// Evasive "No" button logic + modal logic
+// Evasive "No" button logic + modal + confetti/particles
 // Config
 const DODGE_DISTANCE = 120;        // px - how close the pointer can get before No dodges
 const MOVE_DISTANCE = 120;         // px - how far to attempt to move each dodge
@@ -13,10 +13,14 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
   const modal = document.getElementById('modal');
   const modalClose = document.getElementById('modal-close');
   const modalOk = document.getElementById('modal-ok');
+  const nameEl = document.querySelector('.name');
 
   // Entrance animation
   requestAnimationFrame(() => card.classList.add('enter'));
   yesBtn.classList.add('pulse');
+
+  // Add shimmer on name
+  nameEl.classList.add('shimmer');
 
   // Utility
   function getRect(el) { return el.getBoundingClientRect(); }
@@ -28,20 +32,13 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
   // Compute bounds the No button may occupy (inside the card, with padding)
   function computeBounds() {
     const cardRect = getRect(card);
-    // We'll measure the wrapper relative to the card to position the button using left/top
-    const padding = 16;
+    const padding = 18;
     return {
       left: padding,
       top: padding,
       right: cardRect.width - padding - noBtn.offsetWidth,
       bottom: cardRect.height - padding - noBtn.offsetHeight
     };
-  }
-
-  // Convert a document point to coordinates relative to the noWrap (so we can set left/top)
-  function toWrapCoords(x, y) {
-    const wrapRect = noWrap.getBoundingClientRect();
-    return { x: x - wrapRect.left, y: y - wrapRect.top };
   }
 
   // Get center of an element in document coords
@@ -57,7 +54,6 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
     const localY = clientY - wrapRect.top;
 
     // New left/top within wrapper
-    // We'll compute desired left so that button center matches localX/localY
     let left = localX - noBtn.offsetWidth / 2;
     let top = localY - noBtn.offsetHeight / 2;
 
@@ -82,7 +78,6 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
     const tx = left + 'px';
     const ty = top + 'px';
     noBtn.style.transform = `translate3d(${tx}, ${ty}, 0)`;
-    // For wiggle animation, pass values via CSS variables
     noBtn.style.setProperty('--tx', tx);
     noBtn.style.setProperty('--ty', ty);
   }
@@ -104,6 +99,10 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
       const tryX = noCenter.x + awayX * MOVE_DISTANCE + (Math.random() - 0.5) * 40;
       const tryY = noCenter.y + awayY * MOVE_DISTANCE + (Math.random() - 0.5) * 40;
 
+      // visual feedback: card pulse
+      card.classList.add('pulse');
+      setTimeout(() => card.classList.remove('pulse'), 520);
+
       // wiggle indicator
       noBtn.classList.add('moving');
       // Place animated
@@ -112,17 +111,14 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
       moves++;
       if (moves >= MAX_MOVES_BEFORE_HOLD) {
         isHolding = true;
-        // leave the moving animation off after a short delay
         setTimeout(() => noBtn.classList.remove('moving'), 540);
-        // optional: add a friendly tooltip or small shake to indicate "giving up"
       } else {
-        // remove moving class after animation finishes to allow retrigger
         setTimeout(() => noBtn.classList.remove('moving'), 720);
       }
     }
   }
 
-  // Global pointer move (mousemove & touchmove) attached to document for responsiveness
+  // Global pointer move (mousemove & touchmove)
   function onMove(e) {
     const p = e.touches ? e.touches[0] : e;
     handlePointer(p.clientX, p.clientY);
@@ -142,7 +138,6 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
       // cancel the click and display a tiny nudge
       e.preventDefault();
       e.stopPropagation();
-      // quick shake
       noBtn.animate([
         { transform: noBtn.style.transform + ' translateX(0)' },
         { transform: noBtn.style.transform + ' translateX(-8px)' },
@@ -151,7 +146,6 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
       ], { duration: 360, easing: 'ease-out' });
       return false;
     }
-    // otherwise, let it go through (if holding or allowed)
     return true;
   }
 
@@ -159,13 +153,67 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
   function openModal() {
     modal.classList.add('show');
     modal.setAttribute('aria-hidden', 'false');
-    // focus the close button for accessibility
     modalClose.focus();
+    // celebrate: confetti
+    burstConfettiAtCenter();
+    burstHeartsAtCenter();
   }
   function closeModal() {
     modal.classList.remove('show');
     modal.setAttribute('aria-hidden', 'true');
     yesBtn.focus();
+  }
+
+  // Particle helpers (confetti + hearts)
+  function makeParticle(x, y, color, size = 10, shape = 'rect') {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = `${x - size / 2}px`;
+    p.style.top = `${y - size / 2}px`;
+    p.style.width = `${size}px`;
+    p.style.height = `${size}px`;
+    p.style.background = color;
+    p.style.borderRadius = shape === 'heart' ? '50% 50% 50% 50% / 60% 60% 40% 40%' : '2px';
+    p.style.transform = `rotate(${Math.random() * 360}deg)`;
+    document.body.appendChild(p);
+    return p;
+  }
+
+  function animateParticle(p, vx, vy, rot, delay = 0, gravity = 0.6, fade = true) {
+    const duration = 1600 + Math.random() * 400;
+    p.animate([
+      { transform: `translate3d(0,0,0) rotate(0deg)`, opacity: 1 },
+      { transform: `translate3d(${vx}px, ${vy + gravity * duration / 10}px, 0) rotate(${rot}deg)`, opacity: fade ? 0 : 1 }
+    ], { duration, easing: 'cubic-bezier(.2,.8,.2,1)', delay });
+    setTimeout(() => { p.remove(); }, duration + delay + 40);
+  }
+
+  function burstConfettiAtCenter() {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const colors = ['#FF6B9A', '#FF9BC2', '#FFD6E0', '#FFF58F', '#69C0FF'];
+    for (let i = 0; i < 22; i++) {
+      const angle = (Math.PI * 2) * (i / 22) + (Math.random() - 0.5);
+      const speed = 180 + Math.random() * 160;
+      const vx = Math.cos(angle) * speed;
+      const vy = Math.sin(angle) * speed;
+      const p = makeParticle(cx, cy, colors[i % colors.length], 10 + Math.random() * 10, 'rect');
+      animateParticle(p, vx, vy, (Math.random() - 0.5) * 720, 0, 0.8, true);
+    }
+  }
+
+  function burstHeartsAtCenter() {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2 - 30;
+    const colors = ['#FF6B9A', '#FF9BC2', '#FFB4CF'];
+    for (let i = 0; i < 8; i++) {
+      const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.4;
+      const speed = 120 + Math.random() * 120;
+      const vx = Math.cos(angle) * speed + (Math.random() - 0.5) * 40;
+      const vy = Math.sin(angle) * speed + (Math.random() - 0.5) * 40;
+      const p = makeParticle(cx + (Math.random() - 0.5) * 40, cy + (Math.random() - 0.5) * 20, colors[i % colors.length], 14 + Math.random() * 10, 'heart');
+      animateParticle(p, vx, vy, (Math.random() - 0.5) * 540, 0, 0.6, true);
+    }
   }
 
   // Event wiring
@@ -193,12 +241,12 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
 
   // Keep No button constrained if window resized
   window.addEventListener('resize', () => {
-    // recompute and ensure the button stays inside
-    // extract current transform and move to a valid spot if needed
-    const wrapRect = noWrap.getBoundingClientRect();
     const cur = getRect(noBtn);
     const centerX = cur.left + cur.width / 2;
     const centerY = cur.top + cur.height / 2;
     placeNoAt(centerX, centerY);
   });
+
+  // expose a little tidy-up API (optional)
+  window.__valentine = { resetMoves: () => { moves = 0; isHolding = false; } };
 })();
