@@ -1,8 +1,9 @@
-// Evasive "No" button logic + modal + confetti/particles
+// Evasive "No" button logic + modal + confetti/particles + background hearts
 // Config
 const DODGE_DISTANCE = 120;        // px - how close the pointer can get before No dodges
 const MOVE_DISTANCE = 120;         // px - how far to attempt to move each dodge
 const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to eventually stop dodging
+const BG_HEART_COUNT = 20;         // how many background hearts to create
 
 (function () {
   const yesBtn = document.getElementById('yes-btn');
@@ -14,6 +15,7 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
   const modalClose = document.getElementById('modal-close');
   const modalOk = document.getElementById('modal-ok');
   const nameEl = document.querySelector('.name');
+  const bgHearts = document.querySelector('.bg-hearts');
 
   // Entrance animation
   requestAnimationFrame(() => card.classList.add('enter'));
@@ -103,6 +105,10 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
       card.classList.add('pulse');
       setTimeout(() => card.classList.remove('pulse'), 520);
 
+      // make the name shimmer a little on dodge
+      nameEl.classList.add('shimmer-burst');
+      setTimeout(() => nameEl.classList.remove('shimmer-burst'), 700);
+
       // wiggle indicator
       noBtn.classList.add('moving');
       // Place animated
@@ -154,7 +160,7 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
     modal.classList.add('show');
     modal.setAttribute('aria-hidden', 'false');
     modalClose.focus();
-    // celebrate: confetti
+    // celebrate: confetti + hearts
     burstConfettiAtCenter();
     burstHeartsAtCenter();
   }
@@ -216,6 +222,52 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
     }
   }
 
+  // Background hearts generation
+  function spawnBackgroundHearts(count = BG_HEART_COUNT) {
+    const colors = ['rgba(255,107,154,0.18)', 'rgba(255,155,180,0.14)', 'rgba(255,180,200,0.12)'];
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'bg-heart';
+      const size = 10 + Math.random() * 18;
+      el.style.width = `${size}px`;
+      el.style.height = `${size}px`;
+      // random horizontal position
+      const left = Math.random() * 100;
+      el.style.left = `${left}%`;
+      // start slightly below viewport
+      el.style.top = `${90 + Math.random() * 20}%`;
+      // random color
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      // insert a tiny inline SVG heart for crisp shape and color
+      const svg = `<svg viewBox="0 0 32 32" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <path d="M23.6 4c-2.2 0-4 1.6-4.6 3.6C18.4 5.6 16.6 4 14.4 4 10.6 4 8 7.2 8 11c0 7.1 9.1 11.5 11.6 12.8.5.3 1.1.3 1.6 0C22.9 22.5 32 18.1 32 11c0-3.8-2.6-7-8.4-7z" fill="${color}"/>
+      </svg>`;
+      el.innerHTML = svg;
+
+      // randomize animation duration/delay
+      const dur = 10 + Math.random() * 18; // seconds
+      const delay = -Math.random() * dur; // negative delay to spread initial positions
+      el.style.animation = `heartRise ${dur}s linear ${delay}s infinite`;
+      // slight horizontal drift using transform via CSS variable
+      el.style.setProperty('--drift', `${(Math.random() - 0.5) * 60}px`);
+      el.style.zIndex = -3;
+
+      bgHearts.appendChild(el);
+      // Slight horizontal oscillation (via JS using CSS transform for variety)
+      // using requestAnimationFrame to add non-blocking subtle movement
+      (function(el, drift) {
+        let t = Math.random() * 1000;
+        function tick() {
+          t += 0.01;
+          const x = Math.sin(t * (0.5 + Math.random() * 0.8)) * (drift / 2);
+          el.style.transform = `translateX(${x}px)`;
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      })(el, parseFloat(el.style.getPropertyValue('--drift')));
+    }
+  }
+
   // Event wiring
   document.addEventListener('mousemove', onMove, { passive: true });
   document.addEventListener('touchmove', onMove, { passive: true });
@@ -246,6 +298,9 @@ const MAX_MOVES_BEFORE_HOLD = 999; // set lower (e.g. 8) if you want it to event
     const centerY = cur.top + cur.height / 2;
     placeNoAt(centerX, centerY);
   });
+
+  // spawn background hearts
+  spawnBackgroundHearts(BG_HEART_COUNT);
 
   // expose a little tidy-up API (optional)
   window.__valentine = { resetMoves: () => { moves = 0; isHolding = false; } };
